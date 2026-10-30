@@ -330,7 +330,7 @@ const FALLBACK={
 const content=document.getElementById('content');
 const app=document.getElementById('app');
 let historyStack=[];
-let current={id:ROOT,name:'Início'};
+let current={id:ROOT,name:'Início',path:[]};
 let listItems=[];
 let viewMode='buttons';
 try{viewMode=localStorage.getItem('oeste-view-mode')||'buttons'}catch{}
@@ -370,7 +370,7 @@ function setViewMode(mode){
 }
 
 function renderHome(){
-  current={id:ROOT,name:'Início'};
+  current={id:ROOT,name:'Início',path:[]};
   historyStack=[];
   app.classList.add('home');
   const stackClass=viewMode==='blocks'?'stack blocks':'stack';
@@ -378,9 +378,10 @@ function renderHome(){
   history.replaceState({folder:ROOT},'',location.pathname);
 }
 
-function openFolder(id,name,restore=false){
+function openFolder(id,name,restore=false,restoredPath){
+  const path=restore ? (restoredPath||[]) : [...(current.path||[]),id];
   if(!restore) historyStack.push(current);
-  current={id,name};
+  current={id,name,path};
   app.classList.remove('home');
   content.innerHTML=`
     <div class="folder-header">
@@ -401,31 +402,35 @@ function openFolder(id,name,restore=false){
   document.getElementById('backInline').onclick=goBack;
   document.getElementById('search').oninput=e=>renderItems(e.target.value);
   if(!restore) history.pushState({folder:id},'',`#pasta=${encodeURIComponent(id)}`);
-  loadFolder(id);
+  loadFolder(id,path);
 }
 
 function goBack(){
   if(historyStack.length){
     const prev=historyStack.pop();
     if(prev.id===ROOT) renderHome();
-    else openFolder(prev.id,prev.name,true);
+    else openFolder(prev.id,prev.name,true,prev.path);
   }else renderHome();
 }
 
-async function loadFolder(id){
+async function loadFolder(id,path=[]){
   let failed=false;
+  let errorMessage='';
   let data=[];
   try{
     const ctrl=new AbortController();
     const timer=setTimeout(()=>ctrl.abort(),13000);
-    const res=await fetch('/api/files?folder='+encodeURIComponent(id),{signal:ctrl.signal,credentials:'same-origin'});
+    const query=new URLSearchParams({folder:id});
+    if(path.length) query.set('path',path.join(','));
+    const res=await fetch('/api/files?'+query.toString(),{signal:ctrl.signal,credentials:'same-origin'});
     clearTimeout(timer);
-    if(!res.ok) throw new Error('API indisponível');
     const payload=await res.json();
+    if(!res.ok) throw new Error(payload.details||payload.error||`Erro HTTP ${res.status}`);
     if(!Array.isArray(payload.files)) throw new Error('Formato inválido');
     data=payload.files;
   }catch(e){
     failed=true;
+    errorMessage=String(e.message||'Erro de conexão.').slice(0,230);
     data=(FALLBACK[id]||[]).map(([name,fid,mime])=>({id:fid,name,mimeType:mime||'application/vnd.google-apps.folder',webViewLink:mime?fileUrl(fid):folderUrl(fid)}));
   }
   if(current.id!==id) return;
@@ -435,7 +440,9 @@ async function loadFolder(id){
     const listing=document.getElementById('listing');
     const note=document.createElement('div');
     note.className='hint';
-    note.innerHTML='<b>Visualização limitada.</b> A integração em tempo real ainda não está configurada nesta hospedagem. As pastas conhecidas podem ser abertas abaixo; para consultar todos os arquivos atualizados, use <b>“Abrir pasta no Drive”</b>.';
+    const heading=document.createElement('b');
+    heading.textContent='Visualização limitada. ';
+    note.append(heading,document.createTextNode('Não foi possível carregar a pasta em tempo real. '+errorMessage+' Use “Abrir pasta no Drive” para acessar os materiais.'));
     listing.prepend(note);
   }
 }

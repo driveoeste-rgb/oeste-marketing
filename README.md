@@ -1,6 +1,12 @@
-# Oeste Marketing — Portal de Arquivos (versão 5.0)
+# Oeste Marketing — Portal de Arquivos (versão 6.0 — correção da API)
 
 Interface responsiva para acessar o repositório de marketing no Google Drive.
+
+## Novidades da versão 6.0
+- Corrigida a verificação de acesso a pastas que causava `{"error":"Pasta não acessível."}`.
+- Adicionada navegação com validação de caminho (`path`) sem expor a chave da API.
+- O erro exibido na tela agora é mais específico, preservando o acesso pelo Drive como alternativa.
+- Mantidos todos os oito botões, imagens e seletor minimalista.
 
 ## Novidades
 - Seletor minimalista à esquerda: ícone de **lista** ou **grade** (como a referência enviada).
@@ -49,7 +55,11 @@ oeste-portal/
 3. Em **APIs e serviços > Credenciais**, crie uma chave de API e restrinja seu uso à **Google Drive API**. Como a chave é usada no servidor Cloudflare, não use restrição de referenciador HTTP; valide uma política de restrição compatível com execução no servidor. Habilite cotas/alertas.
 4. No Cloudflare, abra o projeto Pages > **Settings > Variables and Secrets > Add**.
 5. Nome: `GOOGLE_DRIVE_API_KEY`. Valor: a chave. Ative **Encrypt** (Secret). Salve e faça um **novo deploy**.
-6. Teste `https://SEU-PROJETO.pages.dev/api/files?folder=1W_w2ykVlXpjZgsGk11ol_uw44_gHnr0Y`. Se a API estiver ativa e a pasta pública, a resposta terá uma lista `files`.
+6. Teste primeiro `https://SEU-PROJETO.pages.dev/api/files` (pasta raiz) e depois `https://SEU-PROJETO.pages.dev/api/files?folder=1W_w2ykVlXpjZgsGk11ol_uw44_gHnr0Y` (Ofertas). Se funcionar, a resposta terá uma lista `files`. A interface inclui automaticamente o parâmetro `path` ao navegar em subpastas.
+
+Se a resposta exibir `googleStatus: 403` ou erro de referenciador/IP, confira a **restrição de aplicativo** da chave de API no Google Cloud. A chamada ao Google é feita pelo servidor do Cloudflare, não pelo navegador do visitante. Para este exemplo, uma chave sem restrição de aplicativo, restrita **somente à Google Drive API**, guardada como Secret e com cotas/alertas é uma opção de teste; nunca coloque a chave no HTML ou GitHub. A proteção de arquivos privados exige OAuth. Se a resposta disser que o Drive exige `resourceKey`, use uma integração que suporte as chaves de recurso.
+
+**Correção 6.0:** antes, a API usava `files.get` para verificar subpastas compartilhadas por link; isto podia retornar 403/404 mesmo quando a listagem pública era permitida. Agora a validação percorre as pastas a partir da raiz usando `files.list`, verificando a presença de cada pasta entre os filhos da anterior. A função **não permite** consultar IDs arbitrários fora dessa árvore. Subpastas precisam do parâmetro `path=ID_PASTA_PAI,ID_SUBPASTA`; a interface monta isso automaticamente.
 
 ## Segurança (leitura importante)
 - A pasta OESTE MARKETING estava acessível para `anyone with link` como leitora em 30/10/2026. O site **não bloqueia nem protege** automaticamente os links diretos desses arquivos.

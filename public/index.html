@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#075cf1">
+<meta name="description" content="Acesso rápido aos arquivos do Marketing Oeste Chevrolet.">
+<title>Oeste Marketing | Portal de Arquivos</title>
+<link rel="icon" type="image/png" href="assets/logo-oeste.png">
+<style>
+:root{
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  color:#142747;
+  background:#edf5ff;
+  font-synthesis:none;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100svh;background:#edf5ff}
+button,input,a{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ffbc2b;outline-offset:3px}
+a{text-decoration:none}
+.app{
+  max-width:560px;
+  min-height:100svh;
+  margin:auto;
+  background:white;
+  overflow:hidden;
+  box-shadow:0 16px 65px #092e7216;
+  position:relative;
+}
+.hero{
+  height:250px;
+  z-index:1;
+  background:#040711;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:-125px -160px 0 -90px;
+  background:repeating-radial-gradient(ellipse at 45% 5%,transparent 0 36px,#1350eb 38px 52px,transparent 54px 94px);
+  transform:rotate(21deg);
+  opacity:.72;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  width:240px;
+  height:240px;
+  right:-116px;
+  top:-84px;
+  border:23px solid #02b7df;
+  border-radius:50%;
+  transform:rotate(-18deg);
+}
+.asterisk{
+  position:absolute;
+  left:51%;
+  top:77px;
+  color:#43d4dd;
+  font-size:155px;
+  line-height:1;
+  transform:rotate(-20deg);
+  text-shadow:15px -8px #5132ea;
+  opacity:.9;
+  z-index:0;
+}
+.back-home{
+  position:absolute;
+  top:20px;
+  left:20px;
+  background:white;
+  color:#0577e5;
+  border:0;
+  border-radius:50%;
+  height:48px;
+  width:48px;
+  font-size:25px;
+  font-weight:900;
+  z-index:4;
+  display:grid;
+  place-items:center;
+}
+.home .back-home{display:none}
+.logo{
+  position:absolute;
+  z-index:3;
+  width:182px;
+  height:182px;
+  object-fit:contain;
+  left:50%;
+  top:165px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  filter:drop-shadow(0 5px 13px #00144725);
+}
+.surface{
+  border-radius:50px 50px 0 0;
+  position:relative;
+  z-index:2;
+  min-height:calc(100svh - 250px);
+  background:white;
+  padding:112px clamp(24px,7vw,46px) 44px;
+  overflow:hidden;
+}
+/* Background is purely decorative: no large logo behind interactive content. */
+.surface:before{
+  content:"";
+  position:absolute;
+  width:520px;
+  height:380px;
+  right:-250px;
+  bottom:-140px;
+  pointer-events:none;
+  background:repeating-radial-gradient(ellipse at 70% 60%, transparent 0 55px, #cdeaf8 59px 76px, transparent 80px 125px);
+  opacity:.3;
+  z-index:0;
+}
+.surface:after{
+  content:"";
+  position:absolute;
+  width:250px;
+  height:250px;
+  left:-205px;
+  top:150px;
+  border:22px solid #e9f6ff;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:0;
+}
+.content{position:relative;z-index:1}
+/* Minimal segmented control, aligned to the left as in the reference. */
+.toolbar{
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  margin:0 0 20px;
+}
+.view-segment{
+  display:inline-flex;
+  width:138px;
+  height:42px;
+  overflow:hidden;
+  border:1px solid #76818a;
+  border-radius:999px;
+  background:#fff;
+  flex-shrink:0;
+}
+.view-switch{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  flex:1 1 50%;
+  min-width:0;
+  padding:0 9px;
+  background:#fff;
+  color:#202830;
+  border:0;
+  border-radius:0;
+  transition:background-color .15s ease,color .15s ease;
+}
+.view-switch:first-child{border-right:1px solid #76818a}
+.view-switch.is-active{background:#bfe5ff;color:#06486f}
+.view-switch:hover:not(.is-active){background:#f0f7fc}
+.view-switch svg{display:block;flex-shrink:0}
+.view-switch:focus-visible{outline:3px solid #ffbc2b;outline-offset:-4px;z-index:1}
+.stack{display:grid;gap:14px}
+.stack.blocks{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.category{
+  border:0;
+  background:linear-gradient(105deg,#0769f8,#4a90fe);
+  box-shadow:0 5px 12px #1558bf16;
+  border-radius:100px;
+  min-height:56px;
+  color:white;
+  font-size:clamp(19px,5vw,27px);
+  font-weight:850;
+  letter-spacing:.4px;
+  padding:11px 20px;
+  text-align:center;
+  transition:transform .14s,filter .14s,border-radius .14s,min-height .14s;
+}
+.stack.blocks .category{
+  border-radius:24px;
+  min-height:110px;
+  font-size:clamp(16px,4.2vw,21px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  line-height:1.1;
+}
+.category:hover{filter:brightness(1.06)}
+.category:active{transform:scale(.98)}
+.foot{margin-top:24px;text-align:center;color:#7890a7;font-size:12px}
+.folder-header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.back-inline{border:0;background:#e8f1ff;border-radius:50%;width:43px;height:43px;color:#075fe5;font-size:24px;flex:0 0 auto}
+.folder-title{font-size:26px;line-height:1.1;margin:0;font-weight:850;overflow-wrap:anywhere}
+.folder-sub{font-size:13px;color:#67829d;margin:6px 0 0}
+.search{display:flex;align-items:center;background:#f0f6ff;border:1px solid #dfebf9;border-radius:16px;margin-bottom:14px;padding:0 16px;gap:8px}
+.search span{color:#5684c0}
+.search input{border:0;outline:0;background:transparent;padding:15px 0;width:100%;font-size:15px;color:#203754}
+.items{display:grid;gap:9px}
+.items.blocks{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.item{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background:#fff;
+  border:1px solid #e5ecf7;
+  border-radius:15px;
+  padding:13px 12px;
+  color:#263a58;
+  width:100%;
+  text-align:left;
+  box-shadow:0 3px 10px #1234aa08;
+  transition:transform .14s,box-shadow .14s,background .14s;
+}
+.item:hover{background:#f7fbff}
+.item:active{transform:scale(.985)}
+.items.blocks .item{
+  display:grid;
+  justify-items:flex-start;
+  align-content:flex-start;
+  min-height:150px;
+  gap:10px;
+  padding:16px 14px;
+}
+.items.blocks .item .chev{justify-self:end;align-self:end}
+.items.blocks .item .item-info{width:100%}
+.item-icon{width:42px;height:42px;border-radius:12px;background:#eaf3ff;display:grid;place-items:center;color:#0f68df;font-size:21px;flex-shrink:0}
+.item-info{min-width:0;flex:1}
+.item-name{font-size:14px;font-weight:750;overflow-wrap:anywhere}
+.item-meta{font-size:11px;color:#7c90a7;margin-top:4px}
+.chev{font-size:20px;color:#4388ea}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.small-link{display:inline-flex;align-items:center;gap:5px;border-radius:30px;background:#e8f2ff;color:#1065cf;font-size:13px;font-weight:750;padding:11px 15px}
+.hint{background:#fff8e8;border:1px solid #ffe4ad;padding:15px;border-radius:16px;color:#795c2a;font-size:13px;line-height:1.55;margin:14px 0}
+.empty{color:#617a96;text-align:center;padding:24px;font-size:14px}
+.loading{color:#537ca8;font-size:14px;padding:20px}
+.hide{display:none!important}
+.preview{position:fixed;inset:0;z-index:10;background:#00152bbd;display:grid;place-items:center;padding:18px}
+.preview-inner{background:white;border-radius:20px;width:min(96vw,720px);height:min(92svh,750px);padding:14px;display:flex;flex-direction:column}
+.preview-head{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.preview-name{flex:1;font-size:13px;font-weight:750;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.preview-close{background:#ebf1ff;border:0;border-radius:50%;height:36px;width:36px;color:#1762b6}
+.preview iframe{width:100%;flex:1;border:0;border-radius:12px;background:#f5f8fe}
+.preview-actions{margin-top:9px}
+.small-note{font-size:12px;color:#5e7692;margin:15px 0}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:340px){
+  .stack.blocks,.items.blocks{grid-template-columns:1fr}
+}
+@media(max-width:390px){
+  .surface{padding-left:20px;padding-right:20px}
+  .category{font-size:clamp(18px,5.2vw,24px)}
+  .stack.blocks .category{font-size:16px}
+}
+@media(min-width:800px){
+  .app{max-width:640px;min-height:920px;margin:24px auto;border-radius:26px}
+  .surface{min-height:610px}
+  .hero{height:275px}
+  .surface{min-height:645px;padding-top:122px}
+  .logo{top:181px;width:202px;height:202px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app home" id="app">
+  <header class="hero">
+    <div class="asterisk" aria-hidden="true">✱</div>
+    <button class="back-home" id="heroBack" aria-label="Voltar para o início">‹</button>
+  </header>
+  <img class="logo" src="assets/logo-oeste-circulo.png" alt="Oeste Marketing">
+  <main class="surface"><div class="content" id="content"></div></main>
+</div>
+<div class="preview hide" id="preview" role="dialog" aria-modal="true" aria-label="Pré-visualização do arquivo">
+  <div class="preview-inner">
+    <div class="preview-head">
+      <span class="preview-name" id="previewName"></span>
+      <button class="preview-close" id="closePreview" aria-label="Fechar pré-visualização">✕</button>
+    </div>
+    <iframe id="previewFrame" title="Visualização do arquivo" referrerpolicy="no-referrer" loading="lazy"></iframe>
+    <div class="preview-actions"><a class="small-link" id="previewOpen" target="_blank" rel="noopener noreferrer">Abrir no Google Drive ↗</a></div>
+  </div>
+</div>
+<script>
+const ROOT='1u0SJZZfxn0zDfbUHx6vaAqeQKTmHHHl1';
+const CATEGORIES=[
+  {name:'OFERTAS',id:'1W_w2ykVlXpjZgsGk11ol_uw44_gHnr0Y'},
+  {name:'COMUNICADOS',id:'1BGakKu_2mUa-Pvfdcu5uRwLP6SoCFxB5'},
+  {name:'FERIADOS',id:'1xkF17eBmrivrCu0tlQZ8IrgE-eKzujxk'},
+  {name:'SPECSHEETS',id:'1oYo4MA4Hi-kD6VD7JkshEhCeSTFiuS8U'},
+  {name:'VÍDEOS',id:'1-_iMEXCFuPDAchs4ouW6isevXoFs4Q9t'},
+  {name:'FEIRÕES',id:'1hkaIKdcn-K3QxsKFrymlOeRCd16Wh-SC'},
+  {name:'FOTO DE PERFIL',id:'1KgwIVkZbLmLjozewMFyULs-sLn03V1bO'},
+  {name:'LOGO OESTE',id:'1zItaehPLo3e3JKKLeRzf_UQymathYCvr'}
+];
+const FALLBACK={
+'1W_w2ykVlXpjZgsGk11ol_uw44_gHnr0Y':[['10 - OUTUBRO','1aZ5s7qSD6UqKCualqMTVwxSi0zSTPbux'],['09 - SETEMBRO','1VEiSl03Oprxxz2m9KczhG2wTPTM7jX6k'],['08 - AGOSTO','1xoVwkjuVtlE-Cq06CtA4ZlGZQwM58Wyr'],['07 - JULHO','1NIOkfbQwJBEf5-JrNBsWjoQ_9qwXVl7X'],['06 - JUNHO','1ZI8zyb8hHlDbbt3y_KtNkzczU9FXhyhO'],['05 - MAIO','13aexqBZlft5VnWGtVuSsz6p9wBNq80Kf'],['04 - ABRIL','1gf98Jwwhsghgl7Zv3WRfpx-BgPPwzEHW'],['03 - MARÇO','1e1rAw6CL11ZjEf8zQ5OeeGMykvaIvZ6x'],['02 - FEVEREIRO','180Lf2p8Q901qO2UswoH7oqFLI-YzoxeR'],['01 - JANEIRO','158nS5M7VvbfHbRCsZNyqfpGgFpwFMV8k']],
+'1hkaIKdcn-K3QxsKFrymlOeRCd16Wh-SC':[['09 - MOBILITY DAY','1rtx8RQQrmu75ONjy5K5M4q1KpV-tk-AC'],['08 - EXPOBARRA','1kYvjDRKtGXLDv6kaeik57ZT3QvPcunJt'],['07 - FEIRÃO NA HAVAN','1e8-gq4-OuFeDx-3bfx_Ew8yTTehEnOLz'],['06 - FEIRÃO DE NEGÓCIOS','1Z-uRQJC81qqViqnQLb7MtZWq_YugDuGj'],['05 - EXPONOVA','1E2V7rNQQYXBYtoWl01AOQI7V9NygKDwg'],['04 - PARECIS','1QqDXGXxYScNLfkhQpf36X7urUPEBUxi5'],['03 - FEIRÃO NACIONAL','1F-2fa9k3vZNdCKOKeVxACs9kK5AjktcZ'],['02 - FOLIA XP','1Mn_4eLdPSH6fdD40dJNLy5BkSnlb-Tkj'],['01 - DINETEC','1eqMH4E7e8vs1hlmKF-Bb1mrwjG1Oda6Y']],
+'1KgwIVkZbLmLjozewMFyULs-sLn03V1bO':[['PERFIL OESTE','11BheDNGePr5A0RY1IIQo4RLQ3Zrcby7Z'],['GRUPO GERAL','19YgUGilamzU_CSGfcvwl4hmaaLhuNoxY'],['RECEPÇÃO','1m7l1mN9644bMKG92C4ITAUi2UFJa2B4C'],['PEÇAS','1T2vInPAC51n9ItwgLr9J3uB0tal2H_fl'],['AGENDAMENTO','1CNRgnPgcn8P5ZMaXQwK9L0X5Gtoexp3t'],['F&I','1wUgstgLYvMd-FCtsBXX6qvy3WvsbeWKf']],
+'1oYo4MA4Hi-kD6VD7JkshEhCeSTFiuS8U':[['22/23/24','105MS6rFqGQMV88IIFU1R-nd4j_USbT1e']],
+'1zItaehPLo3e3JKKLeRzf_UQymathYCvr':[
+  ['RODAPÉ','1bqd0LM3DiQqz_tgBiV6RhQfxF0jU3ZQL'],
+  ['LOGO OESTE HORIZONTAL VETOR branca.png','1OksFOtyuMK_fFs1cPgU-EphGRAhXoXAc','image/png'],
+  ['LOGO OESTE HORIZONTAL VETOR cinza.png','1WuM4X3Wli_55ARhxD5YJYFj65uDj7xBB','image/png'],
+  ['LOGO OESTE HORIZONTAL branca.png','1DqdaDdj2EgetcMlpobTDLI6wIz8f7pUl','image/png'],
+  ['LOGO OESTE HORIZONTAL cinza.png','1M2m456tjxfiXLBGO3DWfSfX93CaODtiy','image/png'],
+  ['LOGO OESTE VETOR cinza.png','1am3qfyf_5YAUFVbbzFM4sIh-TSafFovj','image/png'],
+  ['LOGO OESTE VETOR branca.png','1O4xILX4DW2YklbMLFO2ipeVSmoCLGvzZ','image/png'],
+  ['LOGO OESTE branca.png','1BmceVSQoc4AtrgYR9WTbABjnmyjUwFiY','image/png'],
+  ['LOGO OESTE cinza.png','1qN1KkabdArRTY4fbuUxOdYfFwWf6WYvs','image/png']
+],
+'1bqd0LM3DiQqz_tgBiV6RhQfxF0jU3ZQL':[
+  ['RODAPÉ 1.png','1BvGJT-BeUJV-UBxJQfABCj57hNzBSezm','image/png'],
+  ['RODAPÉ 2.png','1-DqxSgupkQSnU7J2sr165LkPcqG0lda8','image/png'],
+  ['RODAPÉ 3.png','1750wQrHa2fvClbFj-DdrWk1Yu5W8a5ed','image/png']
+]
+};
+
+const content=document.getElementById('content');
+const app=document.getElementById('app');
+let historyStack=[];
+let current={id:ROOT,name:'Início'};
+let listItems=[];
+let viewMode='buttons';
+try{viewMode=localStorage.getItem('oeste-view-mode')||'buttons'}catch{}
+
+const folderUrl=id=>'https://drive.google.com/drive/folders/'+encodeURIComponent(id);
+const fileUrl=id=>'https://drive.google.com/file/d/'+encodeURIComponent(id)+'/view';
+const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const isFolder=x=>x.mimeType==='application/vnd.google-apps.folder';
+
+function renderViewSwitch(){
+  // First side: list. Second side: selected/check + grid, matching the visual reference.
+  return `
+    <div class="toolbar" role="group" aria-label="Modo de visualização">
+      <div class="view-segment">
+        <button type="button" class="view-switch ${viewMode==='buttons'?'is-active':''}" data-viewmode="buttons" aria-label="Visualização em botões" aria-pressed="${viewMode==='buttons'}" title="Visualizar em botões">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h16" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" class="view-switch ${viewMode==='blocks'?'is-active':''}" data-viewmode="blocks" aria-label="Visualização em blocos" aria-pressed="${viewMode==='blocks'}" title="Visualizar em blocos">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3.5 12 5.4 5.4L20.5 5.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="14" y="3" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="3" y="14" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="14" y="14" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/></svg>
+        </button>
+      </div>
+    </div>`;
+}
+
+function setViewMode(mode){
+  viewMode=mode;
+  try{localStorage.setItem('oeste-view-mode',mode)}catch{}
+  if(current.id===ROOT){
+    renderHome();
+  }else{
+    const search=document.getElementById('search');
+    renderItems(search?search.value:'');
+    const oldToolbar=document.querySelector('.toolbar');
+    if(oldToolbar){ oldToolbar.outerHTML=renderViewSwitch(); }
+  }
+}
+
+function renderHome(){
+  current={id:ROOT,name:'Início'};
+  historyStack=[];
+  app.classList.add('home');
+  const stackClass=viewMode==='blocks'?'stack blocks':'stack';
+  content.innerHTML=`${renderViewSwitch()}<nav class="${stackClass}" aria-label="Categorias de arquivos">${CATEGORIES.map(c=>`<button class="category" data-folder="${c.id}">${escapeHtml(c.name)}</button>`).join('')}</nav><div class="foot">Arquivos oficiais • Oeste Marketing<br>Repositório no Google Drive</div>`;
+  history.replaceState({folder:ROOT},'',location.pathname);
+}
+
+function openFolder(id,name,restore=false){
+  if(!restore) historyStack.push(current);
+  current={id,name};
+  app.classList.remove('home');
+  content.innerHTML=`
+    <div class="folder-header">
+      <button class="back-inline" id="backInline" aria-label="Voltar">‹</button>
+      <div>
+        <h1 class="folder-title">${escapeHtml(name)}</h1>
+        <p class="folder-sub">Toque em uma pasta ou arquivo para abrir</p>
+      </div>
+    </div>
+    ${renderViewSwitch()}
+    <label class="search">
+      <span aria-hidden="true">⌕</span>
+      <span class="sr">Buscar arquivos nesta pasta</span>
+      <input id="search" placeholder="Pesquisar nesta pasta..." autocomplete="off">
+    </label>
+    <div id="listing" class="loading">Carregando arquivos...</div>
+    <div class="actions"><a class="small-link" id="driveLink" target="_blank" rel="noopener noreferrer" href="${folderUrl(id)}">Abrir pasta no Drive ↗</a></div>`;
+  document.getElementById('backInline').onclick=goBack;
+  document.getElementById('search').oninput=e=>renderItems(e.target.value);
+  if(!restore) history.pushState({folder:id},'',`#pasta=${encodeURIComponent(id)}`);
+  loadFolder(id);
+}
+
+function goBack(){
+  if(historyStack.length){
+    const prev=historyStack.pop();
+    if(prev.id===ROOT) renderHome();
+    else openFolder(prev.id,prev.name,true);
+  }else renderHome();
+}
+
+async function loadFolder(id){
+  let failed=false;
+  let data=[];
+  try{
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),13000);
+    const res=await fetch('/api/files?folder='+encodeURIComponent(id),{signal:ctrl.signal,credentials:'same-origin'});
+    clearTimeout(timer);
+    if(!res.ok) throw new Error('API indisponível');
+    const payload=await res.json();
+    if(!Array.isArray(payload.files)) throw new Error('Formato inválido');
+    data=payload.files;
+  }catch(e){
+    failed=true;
+    data=(FALLBACK[id]||[]).map(([name,fid,mime])=>({id:fid,name,mimeType:mime||'application/vnd.google-apps.folder',webViewLink:mime?fileUrl(fid):folderUrl(fid)}));
+  }
+  if(current.id!==id) return;
+  listItems=data.sort((a,b)=>Number(isFolder(b))-Number(isFolder(a))||a.name.localeCompare(b.name,'pt-BR',{numeric:true}));
+  renderItems();
+  if(failed){
+    const listing=document.getElementById('listing');
+    const note=document.createElement('div');
+    note.className='hint';
+    note.innerHTML='<b>Visualização limitada.</b> A integração em tempo real ainda não está configurada nesta hospedagem. As pastas conhecidas podem ser abertas abaixo; para consultar todos os arquivos atualizados, use <b>“Abrir pasta no Drive”</b>.';
+    listing.prepend(note);
+  }
+}
+
+function renderItems(q=''){
+  const target=document.getElementById('listing');
+  if(!target) return;
+  const query=q.toLocaleLowerCase('pt-BR').trim();
+  const filtered=listItems.filter(x=>x.name.toLocaleLowerCase('pt-BR').includes(query));
+  if(!filtered.length){
+    target.innerHTML=`<div class="empty">${query?'Nenhum resultado para esta pesquisa.':'Nenhum arquivo listado nesta pasta.'}</div>`;
+    return;
+  }
+  const itemsClass=viewMode==='blocks'?'items blocks':'items';
+  target.innerHTML=`<div class="${itemsClass}">${filtered.map(x=>{
+    const folder=isFolder(x);
+    const ico=folder?'📁':x.mimeType?.includes('pdf')?'📄':x.mimeType?.startsWith('image/')?'🖼':x.mimeType?.startsWith('video/')?'▶':'📎';
+    const type=folder?'Pasta':(x.mimeType?.includes('pdf')?'PDF':x.mimeType?.startsWith('image/')?'Imagem':x.mimeType?.startsWith('video/')?'Vídeo':'Arquivo');
+    const date=x.modifiedTime ? ' · '+new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(x.modifiedTime)) : '';
+    return `<button class="item" data-id="${escapeHtml(x.id)}"><span class="item-icon" aria-hidden="true">${ico}</span><span class="item-info"><span class="item-name">${escapeHtml(x.name)}</span><span class="item-meta">${type}${date}</span></span><span class="chev" aria-hidden="true">›</span></button>`;
+  }).join('')}</div>`;
+}
+
+function preview(x){
+  document.getElementById('previewName').textContent=x.name;
+  const url=x.webViewLink||fileUrl(x.id);
+  document.getElementById('previewFrame').src='https://drive.google.com/file/d/'+encodeURIComponent(x.id)+'/preview';
+  document.getElementById('previewOpen').href=url;
+  document.getElementById('preview').classList.remove('hide');
+  document.body.style.overflow='hidden';
+}
+function closePreview(){
+  document.getElementById('preview').classList.add('hide');
+  document.getElementById('previewFrame').src='about:blank';
+  document.body.style.overflow='';
+}
+
+document.getElementById('closePreview').onclick=closePreview;
+document.getElementById('preview').onclick=e=>{ if(e.target.id==='preview') closePreview(); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePreview(); });
+document.getElementById('heroBack').onclick=goBack;
+
+content.addEventListener('click',e=>{
+  const switchBtn=e.target.closest('[data-viewmode]');
+  if(switchBtn){
+    setViewMode(switchBtn.dataset.viewmode);
+    return;
+  }
+  const c=e.target.closest('[data-folder]');
+  if(c){
+    const category=CATEGORIES.find(x=>x.id===c.dataset.folder) || listItems.find(x=>x.id===c.dataset.folder);
+    openFolder(c.dataset.folder,category?.name||c.textContent.trim());
+    return;
+  }
+  const b=e.target.closest('[data-id]');
+  if(b){
+    const x=listItems.find(x=>x.id===b.dataset.id);
+    if(x){
+      if(isFolder(x)) openFolder(x.id,x.name);
+      else preview(x);
+    }
+  }
+});
+
+window.addEventListener('popstate',()=>renderHome());
+renderHome();
+</script>
+</body>
+</html>

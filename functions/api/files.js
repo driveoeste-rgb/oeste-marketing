@@ -28,7 +28,7 @@ async function listDriveFolder(apiKey, folderId) {
   for (let page = 0; page < 10; page++) {
     const url = new URL('https://www.googleapis.com/drive/v3/files');
     url.searchParams.set('q', `'${folderId}' in parents and trashed = false`);
-    url.searchParams.set('fields', 'nextPageToken,files(id,name,mimeType,modifiedTime,webViewLink,size)');
+    url.searchParams.set('fields', 'nextPageToken,files(id,name,mimeType,modifiedTime,webViewLink,webContentLink,thumbnailLink,iconLink,size)');
     url.searchParams.set('pageSize', '1000');
     url.searchParams.set('orderBy', 'folder,name_natural');
     url.searchParams.set('supportsAllDrives', 'true');

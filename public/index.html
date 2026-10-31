@@ -30,80 +30,49 @@ a{text-decoration:none}
   position:relative;
 }
 .hero{
-  height:250px;
+  height:285px;
   z-index:1;
-  background:#040711;
   position:relative;
   overflow:hidden;
   isolation:isolate;
+  background:#d8e7f5 url("assets/futuro-suv.png") center center/cover no-repeat;
 }
 .hero:before{
   content:"";
   position:absolute;
-  inset:-125px -160px 0 -90px;
-  background:repeating-radial-gradient(ellipse at 45% 5%,transparent 0 36px,#1350eb 38px 52px,transparent 54px 94px);
-  transform:rotate(21deg);
-  opacity:.72;
+  inset:0;
+  background:linear-gradient(180deg,rgba(6,20,40,.12) 0%,rgba(6,20,40,.02) 44%,rgba(6,20,40,.24) 100%);
+  z-index:0;
 }
 .hero:after{
   content:"";
   position:absolute;
-  width:240px;
-  height:240px;
-  right:-116px;
-  top:-84px;
-  border:23px solid #02b7df;
-  border-radius:50%;
-  transform:rotate(-18deg);
+  left:0;
+  right:0;
+  bottom:0;
+  height:78px;
+  background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.88) 100%);
+  z-index:1;
 }
-.asterisk{
-  position:absolute;
-  left:51%;
-  top:77px;
-  color:#43d4dd;
-  font-size:155px;
-  line-height:1;
-  transform:rotate(-20deg);
-  text-shadow:15px -8px #5132ea;
-  opacity:.9;
-  z-index:0;
-}
-.back-home{
-  position:absolute;
-  top:20px;
-  left:20px;
-  background:white;
-  color:#0577e5;
-  border:0;
-  border-radius:50%;
-  height:48px;
-  width:48px;
-  font-size:25px;
-  font-weight:900;
-  z-index:4;
-  display:grid;
-  place-items:center;
-}
-.home .back-home{display:none}
 .logo{
   position:absolute;
   z-index:3;
-  width:182px;
-  height:182px;
+  width:176px;
+  height:176px;
   object-fit:contain;
   left:50%;
-  top:165px;
+  top:184px;
   transform:translateX(-50%);
   border-radius:50%;
-  filter:drop-shadow(0 5px 13px #00144725);
+  filter:drop-shadow(0 8px 18px rgba(0,20,71,.28));
 }
 .surface{
-  border-radius:50px 50px 0 0;
+  border-radius:48px 48px 0 0;
   position:relative;
   z-index:2;
-  min-height:calc(100svh - 250px);
+  min-height:calc(100svh - 285px);
   background:white;
-  padding:112px clamp(24px,7vw,46px) 44px;
+  padding:98px clamp(24px,7vw,46px) 44px;
   overflow:hidden;
 }
 /* Background is purely decorative: no large logo behind interactive content. */
@@ -153,10 +122,10 @@ a{text-decoration:none}
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
+  gap:4px;
   flex:1 1 50%;
   min-width:0;
-  padding:0 9px;
+  padding:0 4px;
   background:#fff;
   color:#202830;
   border:0;
@@ -207,39 +176,83 @@ a{text-decoration:none}
 .search{display:flex;align-items:center;background:#f0f6ff;border:1px solid #dfebf9;border-radius:16px;margin-bottom:14px;padding:0 16px;gap:8px}
 .search span{color:#5684c0}
 .search input{border:0;outline:0;background:transparent;padding:15px 0;width:100%;font-size:15px;color:#203754}
-.items{display:grid;gap:9px}
+.items{display:grid;gap:10px}
 .items.blocks{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.item{
+.item-row{
+  display:flex;
+  align-items:stretch;
+  gap:8px;
+}
+.item-main{
   display:flex;
   gap:12px;
   align-items:center;
   background:#fff;
   border:1px solid #e5ecf7;
   border-radius:15px;
-  padding:13px 12px;
+  padding:12px;
   color:#263a58;
   width:100%;
   text-align:left;
   box-shadow:0 3px 10px #1234aa08;
   transition:transform .14s,box-shadow .14s,background .14s;
 }
-.item:hover{background:#f7fbff}
-.item:active{transform:scale(.985)}
-.items.blocks .item{
+.item-main:hover{background:#f7fbff}
+.item-main:active{transform:scale(.985)}
+.items.blocks .item-row{
   display:grid;
-  justify-items:flex-start;
-  align-content:flex-start;
+  grid-template-columns:1fr auto;
+  align-items:stretch;
+  gap:10px;
+}
+.items.blocks .item-main{
+  display:grid;
+  grid-template-columns:56px 1fr auto;
+  align-items:start;
   min-height:150px;
   gap:10px;
   padding:16px 14px;
 }
-.items.blocks .item .chev{justify-self:end;align-self:end}
-.items.blocks .item .item-info{width:100%}
-.item-icon{width:42px;height:42px;border-radius:12px;background:#eaf3ff;display:grid;place-items:center;color:#0f68df;font-size:21px;flex-shrink:0}
+.item-icon{
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  background:#eaf3ff;
+  display:grid;
+  place-items:center;
+  color:#0f68df;
+  font-size:21px;
+  flex-shrink:0;
+  overflow:hidden;
+}
+.items.blocks .item-icon{width:56px;height:56px;border-radius:14px}
+.thumb-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
 .item-info{min-width:0;flex:1}
+.items.blocks .item-info{width:100%}
 .item-name{font-size:14px;font-weight:750;overflow-wrap:anywhere}
 .item-meta{font-size:11px;color:#7c90a7;margin-top:4px}
-.chev{font-size:20px;color:#4388ea}
+.chev{font-size:20px;color:#4388ea;flex-shrink:0}
+.items.blocks .chev{align-self:end;justify-self:end}
+.download-link{
+  width:44px;
+  min-width:44px;
+  border-radius:14px;
+  border:1px solid #dce8f8;
+  background:#fff;
+  color:#0d67de;
+  display:grid;
+  place-items:center;
+  box-shadow:0 3px 10px #1234aa08;
+  transition:background .14s,transform .14s;
+}
+.download-link:hover{background:#f2f8ff}
+.download-link:active{transform:scale(.97)}
+.items.blocks .download-link{width:46px;min-width:46px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
 .small-link{display:inline-flex;align-items:center;gap:5px;border-radius:30px;background:#e8f2ff;color:#1065cf;font-size:13px;font-weight:750;padding:11px 15px}
 .hint{background:#fff8e8;border:1px solid #ffe4ad;padding:15px;border-radius:16px;color:#795c2a;font-size:13px;line-height:1.55;margin:14px 0}
@@ -265,10 +278,9 @@ a{text-decoration:none}
 }
 @media(min-width:800px){
   .app{max-width:640px;min-height:920px;margin:24px auto;border-radius:26px}
-  .surface{min-height:610px}
-  .hero{height:275px}
-  .surface{min-height:645px;padding-top:122px}
-  .logo{top:181px;width:202px;height:202px}
+  .hero{height:310px}
+  .surface{min-height:645px;padding-top:110px}
+  .logo{top:194px;width:194px;height:194px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -276,8 +288,6 @@ a{text-decoration:none}
 <body>
 <div class="app home" id="app">
   <header class="hero">
-    <div class="asterisk" aria-hidden="true">✱</div>
-    <button class="back-home" id="heroBack" aria-label="Voltar para o início">‹</button>
   </header>
   <img class="logo" src="assets/logo-oeste-circulo.png" alt="Oeste Marketing">
   <main class="surface"><div class="content" id="content"></div></main>
@@ -340,17 +350,28 @@ const fileUrl=id=>'https://drive.google.com/file/d/'+encodeURIComponent(id)+'/vi
 const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const isFolder=x=>x.mimeType==='application/vnd.google-apps.folder';
 
+function getThumbnail(x){
+  if(!(x.mimeType?.startsWith('image/') || x.thumbnailLink)) return '';
+  return x.thumbnailLink || ('https://drive.google.com/thumbnail?id='+encodeURIComponent(x.id)+'&sz=w120');
+}
+function getDownloadLink(x){
+  if(isFolder(x)) return '';
+  return x.webContentLink || ('https://drive.google.com/uc?export=download&id='+encodeURIComponent(x.id));
+}
+
 function renderViewSwitch(){
-  // First side: list. Second side: selected/check + grid, matching the visual reference.
+  // A marca de seleção só aparece na metade ativa, antes do ícone correspondente.
+  const checkIcon='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const listIcon='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h16" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
+  const gridIcon='<svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="14" y="3" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="3" y="14" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="14" y="14" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/></svg>';
   return `
     <div class="toolbar" role="group" aria-label="Modo de visualização">
       <div class="view-segment">
         <button type="button" class="view-switch ${viewMode==='buttons'?'is-active':''}" data-viewmode="buttons" aria-label="Visualização em botões" aria-pressed="${viewMode==='buttons'}" title="Visualizar em botões">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h16" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+          ${viewMode==='buttons'?checkIcon:''}${listIcon}
         </button>
         <button type="button" class="view-switch ${viewMode==='blocks'?'is-active':''}" data-viewmode="blocks" aria-label="Visualização em blocos" aria-pressed="${viewMode==='blocks'}" title="Visualizar em blocos">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3.5 12 5.4 5.4L20.5 5.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="14" y="3" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="3" y="14" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/><rect x="14" y="14" width="7" height="7" rx=".7" stroke="currentColor" stroke-width="2.3"/></svg>
+          ${viewMode==='blocks'?checkIcon:''}${gridIcon}
         </button>
       </div>
     </div>`;
@@ -459,10 +480,21 @@ function renderItems(q=''){
   const itemsClass=viewMode==='blocks'?'items blocks':'items';
   target.innerHTML=`<div class="${itemsClass}">${filtered.map(x=>{
     const folder=isFolder(x);
+    const thumb=getThumbnail(x);
+    const download=getDownloadLink(x);
     const ico=folder?'📁':x.mimeType?.includes('pdf')?'📄':x.mimeType?.startsWith('image/')?'🖼':x.mimeType?.startsWith('video/')?'▶':'📎';
     const type=folder?'Pasta':(x.mimeType?.includes('pdf')?'PDF':x.mimeType?.startsWith('image/')?'Imagem':x.mimeType?.startsWith('video/')?'Vídeo':'Arquivo');
     const date=x.modifiedTime ? ' · '+new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(x.modifiedTime)) : '';
-    return `<button class="item" data-id="${escapeHtml(x.id)}"><span class="item-icon" aria-hidden="true">${ico}</span><span class="item-info"><span class="item-name">${escapeHtml(x.name)}</span><span class="item-meta">${type}${date}</span></span><span class="chev" aria-hidden="true">›</span></button>`;
+    const iconHtml=thumb
+      ? `<span class="item-icon"> <img class="thumb-img" src="${escapeHtml(thumb)}" alt="" loading="lazy" referrerpolicy="no-referrer"> </span>`
+      : `<span class="item-icon" aria-hidden="true">${ico}</span>`;
+    const downloadHtml=download
+      ? `<a class="download-link" href="${escapeHtml(download)}" target="_blank" rel="noopener noreferrer" title="Baixar arquivo" aria-label="Baixar ${escapeHtml(x.name)}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 18.5h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`
+      : '';
+    return `<div class="item-row">`+
+      `<button class="item-main" data-open-id="${escapeHtml(x.id)}">${iconHtml}<span class="item-info"><span class="item-name">${escapeHtml(x.name)}</span><span class="item-meta">${type}${date}</span></span><span class="chev" aria-hidden="true">›</span></button>`+
+      `${downloadHtml}`+
+      `</div>`;
   }).join('')}</div>`;
 }
 
@@ -483,7 +515,6 @@ function closePreview(){
 document.getElementById('closePreview').onclick=closePreview;
 document.getElementById('preview').onclick=e=>{ if(e.target.id==='preview') closePreview(); };
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closePreview(); });
-document.getElementById('heroBack').onclick=goBack;
 
 content.addEventListener('click',e=>{
   const switchBtn=e.target.closest('[data-viewmode]');
@@ -497,9 +528,9 @@ content.addEventListener('click',e=>{
     openFolder(c.dataset.folder,category?.name||c.textContent.trim());
     return;
   }
-  const b=e.target.closest('[data-id]');
+  const b=e.target.closest('[data-open-id]');
   if(b){
-    const x=listItems.find(x=>x.id===b.dataset.id);
+    const x=listItems.find(x=>x.id===b.dataset.openId);
     if(x){
       if(isFolder(x)) openFolder(x.id,x.name);
       else preview(x);

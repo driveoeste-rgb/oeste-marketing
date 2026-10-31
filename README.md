@@ -73,3 +73,6 @@ Se a resposta exibir `googleStatus: 403` ou erro de referenciador/IP, confira a 
 Abra `public/index.html` em um navegador. Para a listagem automática, é preciso publicar com a Pages Function e configurar a API. Sem ela, o modo de contingência disponibiliza pastas verificadas e o botão `Abrir pasta no Drive`.
 
 Documentação: https://developers.cloudflare.com/pages/get-started/git-integration/ e https://developers.cloudflare.com/pages/functions/get-started/
+
+## Atualização 9.0 — Seletor de visualização
+O check agora é mostrado exclusivamente na metade selecionada do seletor (lista ou grade), acompanhando a alteração de modo em todas as pastas e na tela inicial. Os demais recursos foram preservados.
